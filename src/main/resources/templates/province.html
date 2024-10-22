@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Listado de Provincias')"></head>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-5">
+    <h1 th:text="#{msg.province.title}">Provinces</h1> <!-- Cambiado -->
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Muestra la lista de provincias en una tabla -->
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.province.id}">ID</th> <!-- Cambiado -->
+            <th th:text="#{msg.province.code}">Code</th> <!-- Cambiado -->
+            <th th:text="#{msg.province.name}">Name</th> <!-- Cambiado -->
+            <th th:text="#{msg.province.region}">Region</th> <!-- Cambiado -->
+            <th th:text="#{msg.province.actions}">Actions</th> <!-- Cambiado -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="province : ${listProvinces}">
+            <td th:text="${province.id}"></td>
+            <td th:text="${province.code}"></td>
+            <td th:text="${province.name}"></td>
+            <td th:text="${province.region.name}"></td> <!-- Mostrar el nombre de la región -->
+            <td>
+                <!-- Botón para editar -->
+                <a th:href="@{/provinces/edit(id=${province.id})}" class="btn btn-primary btn-sm" th:text="#{msg.province.edit}">Edit</a> <!-- Cambiado -->
+                <!-- Botón para eliminar -->
+                <form th:action="@{/provinces/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${province.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.province.confirmDelete}');|"> <!-- Cambiado -->
+                        <span th:text="#{msg.province.delete}">Delete</span> <!-- Cambiado -->
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Botón para añadir una nueva provincia -->
+    <a th:href="@{/provinces/new}" class="btn btn-success mt-3" th:text="#{msg.province.add}">Add New Province</a> <!-- Cambiado -->
+
+    <!-- Volver a la página principal -->
+    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.province.backHome}">Back to Home</a> <!-- Cambiado -->
+</main>
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

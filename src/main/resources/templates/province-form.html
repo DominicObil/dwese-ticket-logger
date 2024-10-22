@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Province Form')"></head>
+<body>
+
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-5">
+    <h1 th:text="${province.id == null ? '#{msg.province-form.add}' : '#{msg.province-form.edit}'}"></h1> <!-- Cambiado -->
+
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <form th:action="${province.id == null} ? @{/provinces/insert} : @{/provinces/update}" th:object="${province}" method="post" class="mt-4">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="code" class="form-label" th:text="#{msg.province-form.code}"></label> <!-- Cambiado -->
+            <input type="text" th:field="*{code}" id="code" class="form-control" />
+            <div th:if="${#fields.hasErrors('code')}" class="text-danger" th:errors="*{code}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label" th:text="#{msg.province-form.name}"></label> <!-- Cambiado -->
+            <input type="text" th:field="*{name}" id="name" class="form-control" />
+            <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_region" th:text="#{msg.province-form.region}">Region:</label>
+            <select id="id_region" th:field="*{region.id}" required>
+                <option value="" disabled th:text="#{msg.province-form.selectRegion}"></option> <!-- Cambiado -->
+                <option th:each="region : ${listRegions}"
+                        th:value="${region.id}"
+                        th:text="${region.name}"
+                        th:selected="${province != null && province.region.id == region.id}"></option>
+            </select>
+            <div th:if="${#fields.hasErrors('region.id')}" class="text-danger" th:errors="*{region.id}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" th:text="${province.id == null ? '#{msg.province-form.create}' : '#{msg.province-form.update}'}"></button> <!-- Cambiado -->
+    </form>
+
+    <a href="#" th:href="@{/provinces}" class="btn btn-secondary mt-3" th:text="#{msg.province.form.returnback}"></a> <!-- Cambiado -->
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

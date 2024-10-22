@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Listado de Ubicaciones')"></head>
+<body>
+
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+
+<main class="container mt-5">
+    <h1 th:text="#{msg.location.title}"></h1>
+
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+
+    <!-- Muestra la lista de ubicaciones en una tabla -->
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.location.id}"></th>
+            <th th:text="#{msg.location.address}"></th>
+            <th th:text="#{msg.location.city}"></th>
+            <th th:text="#{msg.location.province}"></th>
+            <th th:text="#{msg.location.supermarket}"></th>
+            <th th:text="#{msg.location.actions}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="location : ${listLocations}">
+            <td th:text="${location.id}"></td>
+            <td th:text="${location.address}"></td>
+            <td th:text="${location.city}"></td>
+            <td th:text="${location.province.name}"></td>
+            <td th:text="${location.supermarket.name}"></td>
+            <td>
+                <!-- Botón para editar -->
+                <a th:href="@{/locations/edit(id=${location.id})}" class="btn btn-primary btn-sm" th:text="#{msg.location.edit}"></a>
+                <!-- Botón para eliminar -->
+                <form th:action="@{/locations/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${location.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.location.confirmDelete}');|" th:text="#{msg.location.delete}">
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Botón para añadir una nueva ubicación -->
+    <a th:href="@{/locations/new}" class="btn btn-success mt-3" th:text="#{msg.location.addNew}"></a>
+
+
+    <!-- Volver a la página principal -->
+    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.location.backHome}"></a>
+</main>
+
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+</html>

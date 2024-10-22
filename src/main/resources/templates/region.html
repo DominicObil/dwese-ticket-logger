@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Listado de Comunidades Autónomas')"></head>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-5">
+  <!-- Usar la clave del archivo de propiedades para el título -->
+  <h1 th:text="#{msg.region.title}"></h1>
+
+  <!-- Mensaje de error (sin cambio) -->
+  <div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- Tabla de regiones con claves -->
+  <table class="table table-bordered mt-3">
+    <thead>
+    <tr>
+      <th th:text="#{msg.region.id}">ID</th>
+      <th th:text="#{msg.region.code}">Code</th>
+      <th th:text="#{msg.region.name}">Name</th>
+      <th th:text="#{msg.region.actions}">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="region : ${listRegions}">
+      <td th:text="${region.id}"></td>
+      <td th:text="${region.code}"></td>
+      <td th:text="${region.name}"></td>
+      <td>
+        <!-- Usar claves de propiedades para los botones -->
+        <a th:href="@{/regions/edit(id=${region.id})}" class="btn btn-primary btn-sm"
+           th:text="#{msg.region.edit}">Edit</a>
+        <form th:action="@{/regions/delete}" method="post" class="d-inline">
+          <input type="hidden" name="id" th:value="${region.id}"/>
+          <button type="submit" class="btn btn-danger btn-sm"
+                  th:onclick="|return confirm('#{msg.region.confirm}');|"
+                  th:text="#{msg.region.delete}">
+            Delete
+          </button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Botón para añadir una nueva región -->
+  <a th:href="@{/regions/new}" class="btn btn-success mt-3" th:text="#{msg.region.add}">Add New Region</a>
+
+  <!-- Volver a la página principal -->
+  <a th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.region-form.returnback}">Back to Home</a>
+</main>
+
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+</html>

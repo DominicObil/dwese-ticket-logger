@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Listado de Supermercados')"></head>
+<body>
+ç
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-5">
+    <h1 th:text="#{msg.supermarket.title}"></h1>
+
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+
+    <!-- Muestra la lista de supermercados en una tabla -->
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.supermarket.id}"></th>
+            <th th:text="#{msg.supermarket.name}"></th>
+            <th th:text="#{msg.supermarket.actions}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="supermarket : ${listSupermarkets}">
+            <td th:text="${supermarket.id}"></td>
+            <td th:text="${supermarket.name}"></td>
+            <td>
+                <!-- Botón para editar -->
+                <a th:href="@{/supermarkets/edit(id=${supermarket.id})}" class="btn btn-primary btn-sm" th:text="#{msg.supermarket.edit}"></a>
+                <!-- Botón para eliminar -->
+                <form th:action="@{/supermarkets/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${supermarket.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.supermarket.confirmDelete}');|" th:text="#{msg.supermarket.delete}">
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Botón para añadir un nuevo supermercado -->
+    <a th:href="@{/supermarkets/new}" class="btn btn-success mt-3" th:text="#{msg.supermarket.addNew}"></a>
+
+
+    <!-- Volver a la página principal -->
+    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.supermarket.backHome}"></a>
+</main>
+
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+</html>
