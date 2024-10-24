@@ -15,25 +15,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Location {
 
-    // Identificador único de la ubicación
+ 
     @NotNull
     private Integer id;
 
-    // Dirección de la ubicación
+
     @NotEmpty(message = "{msg.location.address.notEmpty}")
     @Size(max = 255, message = "{msg.location.address.size}")
     private String address;
 
-    // Ciudad de la ubicación
+
     @NotEmpty(message = "{msg.location.city.notEmpty}")
     @Size(max = 100, message = "{msg.location.city.size}")
     private String city;
 
-    // Supermercado asociado a la ubicación
+
     @NotNull(message = "{msg.location.supermarket.notNull}")
     private Supermarket supermarket;
 
-    // Provincia asociada a la ubicación
+  
     @NotNull(message = "{msg.location.province.notNull}")
     private Province province;
 
