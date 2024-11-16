@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### VARIABLES DE ENTORNO DEL PROYECTO ###
-.env
+../../../Users/dominic/Desktop/servidor/hola/.env

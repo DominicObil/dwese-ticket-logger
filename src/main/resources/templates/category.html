@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Listado de Provincias')"></head>
+<body>
+
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+
+<main class="container mt-5">
+    <h1 th:text="#{msg.category.title}">Categories</h1>
+
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+
+    <!-- Muestra la lista de provincias en una tabla -->
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.category.id}">ID</th>
+            <th th:text="#{msg.category.name}">Name</th>
+            <th th:text="#{msg.category.image}">Image</th>
+            <th th:text="#{msg.category.parent}">CategoryParent</th>
+            <th th:text="#{msg.category.actions}">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${listCategories}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.name}"></td>
+            <!-- Mostrar la imagen si existe -->
+            <td>
+                <img th:if="${category.image != null}"
+                     th:src="@{'/uploads/' + ${category.image}}"
+                     alt="Imagen de la categoría"
+                     style="width: 100px; height: 100px; object-fit: cover;" />
+                <span th:if="${category.image == null}" th:text="#{msg.category.noImage}"></span>
+            </td>
+
+            <!-- Mostrar el nombre del padre o sino mostrar el texto de no padre-->
+            <td>
+                <span th:if="${category.parent != null}" th:text="${category.parent.name}"></span>
+                <span th:if="${category.parent == null}" th:text="#{msg.category.NoParent}"></span>
+            </td>
+
+            <td>
+                <!-- Botón para editar -->
+                <a th:href="@{/categories/edit(id=${category.id})}" class="btn btn-primary btn-sm"th:text="#{msg.province.edit}">Edit</a>
+                <!-- Botón para eliminar -->
+                <form th:action="@{/categories/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${category.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.province.confirm}');|" th:text="#{msg.province.delete}">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Botón para añadir una nueva región -->
+    <a th:href="@{/categories/new}" class="btn btn-success mt-3" th:text="#{msg.category-form.add}">Add New province</a>
+
+
+    <!-- Volver a la página principal -->
+    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3"th:text="#{msg.category.returnback}">Back to Home</a>
+</main>
+
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,41 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head ('Ticket Logger - Insertar/Actualizar Supermercado')"></head>
+<head th:replace="fragments/head :: head ('Ticket Logger - Listado de Supermercados')"></head>
 <body>
-
 
 <!-- Incluir el fragmento del header -->
 <header th:replace="fragments/header :: header"></header>
 
-
 <main class="container mt-5">
-    <h1 th:text="${supermarket.id == null} ? #{msg.supermarket-form.add} : #{msg.supermarket-form.edit}"></h1>
-
-    <!-- Muestra un mensaje de error si hay algún problema -->
-    <div th:if="${errorMessage}" class="alert alert-danger">
-        <p th:text="${errorMessage}"></p>
-    </div>
-
-    <!-- Mostrar un mensaje de error si existe -->
-    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+  <h1 th:text="#{msg.supermarket.title}"></h1>
 
 
-    <form th:action="${supermarket.id == null} ? @{/supermarkets/insert} : @{/supermarkets/update}"
-          th:object="${supermarket}" method="post" class="mt-4">
-        <input type="hidden" th:field="*{id}" />
+  <!-- Muestra un mensaje de error si hay algún problema -->
+  <div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+  </div>
 
 
-        <div class="mb-3">
-            <label for="name" class="form-label" th:text="#{msg.supermarket-form.name}"></label>
-            <input type="text" th:field="*{name}" id="name" class="form-control" required />
-        </div>
+  <!-- Muestra la lista de supermercados en una tabla -->
+  <table class="table table-bordered mt-3">
+    <thead>
+    <tr>
+      <th th:text="#{msg.supermarket.id}"></th>
+      <th th:text="#{msg.supermarket.name}"></th>
+      <th th:text="#{msg.supermarket.actions}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="supermarket : ${listSupermarkets}">
+      <td th:text="${supermarket.id}"></td>
+      <td th:text="${supermarket.name}"></td>
+      <td>
+        <!-- Botón para editar -->
+        <a th:href="@{/supermarkets/edit(id=${supermarket.id})}" class="btn btn-primary btn-sm" th:text="#{msg.supermarket.edit}"></a>
+        <!-- Botón para eliminar -->
+        <form th:action="@{/supermarkets/delete}" method="post" class="d-inline">
+          <input type="hidden" name="id" th:value="${supermarket.id}"/>
+          <button type="submit" class="btn btn-danger btn-sm"
+                  th:onclick="|return confirm('#{msg.supermarket.confirmDelete}');|" th:text="#{msg.supermarket.delete}">
+          </button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
-        <button type="submit" class="btn btn-primary" th:text="${supermarket.id == null} ? #{msg.supermarket-form.create} : #{msg.supermarket-form.update}"></button>
-    </form>
 
-    <!-- Volver a la lista de regiones -->
-    <a href="#" th:href="@{/supermarkets}" class="btn btn-secondary mt-3" th:text="#{msg.supermarket-form.returnback}"></a>
+  <!-- Botón para añadir un nuevo supermercado -->
+  <a th:href="@{/supermarkets/new}" class="btn btn-success mt-3" th:text="#{msg.supermarket.addNew}"></a>
+
+
+  <!-- Volver a la página principal -->
+  <a href="#" th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.supermarket.backHome}"></a>
 </main>
+
 
 <!-- Incluir el fragmento del footer -->
 <footer th:replace="fragments/footer :: footer"></footer>

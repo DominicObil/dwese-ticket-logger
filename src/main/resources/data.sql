@@ -21,7 +21,7 @@ INSERT IGNORE INTO regions (code, name) VALUES
 
 
 -- Insertar datos de las provincias españolas con los códigos correctos
-INSERT IGNORE INTO provinces (code, name, id_region) VALUES
+INSERT IGNORE INTO provinces (code, name, region_id) VALUES
 ('01', 'Araba/Álava', 16),
 ('02', 'Albacete', 8),
 ('03', 'Alicante/Alacant', 10),
@@ -80,9 +80,27 @@ INSERT IGNORE INTO supermarkets (id, name) VALUES
 (1, 'Mercadona'),
 (2, 'Lidl');
 
--- Insertar algunas ubicaciones en la tabla 'location'
+-- Insertar algunas ubicaciones en la tabla 'locations'
 INSERT IGNORE INTO locations (id, address, city, supermarket_id, province_id) VALUES
 (1, 'CTRA, Camino de Tomares', 'Castilleja de la Cuesta', 1, 41),
 (2, 'Av. Canal Sur, s/n', 'Tomares', 1, 41),
 (3, 'Avenida de Bormujos', 'Bormujos', 2, 41);
+
+-- Insertar algunas categorias en la tabla 'categories'
+INSERT IGNORE INTO categories (id, name, image, parent_id) VALUES
+(1, 'Electrónica', NULL, NULL),
+(2, 'Ropa', NULL, NULL),
+(3, 'Hogar y Cocina', NULL, NULL),
+(4, 'Smartphones', NULL, 1),
+(5, 'Portátiles', NULL, 1),
+(6, 'Televisores', NULL, 1),
+(7, 'Ropa de Hombre', NULL, 2),
+(8, 'Ropa de Mujer', NULL, 2),
+(9, 'Ropa Infantil', NULL, 2),
+(10, 'Muebles', NULL, 3),
+(11, 'Electrodomésticos de Cocina', NULL, 3),
+(12, 'Decoración', NULL, 3);
+
+
+
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Insertar/Actualizar Ticket')"></head>
+
+
+<body>
+
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+
+<main class="container mt-5">
+  <h1 th:text="${ticket.id == null} ? #{msg.ticket-form.add} : #{msg.ticket-form.edit}"></h1>
+
+
+  <!-- Mostrar un mensaje de error si existe -->
+  <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+
+  <form th:action="${ticket.id == null} ? @{/tickets/insert} : @{/tickets/update}"
+        th:object="${ticket}" method="post" class="mt-4">
+    <input type="hidden" th:field="*{id}" />
+    <div th:if="${#fields.hasErrors('id')}" class="text-danger" th:errors="*{id}"></div>
+
+
+    <!-- Campo para la fecha del ticket -->
+    <div class="mb-3">
+      <label for="date" class="form-label" th:text="#{msg.ticket-form.date}"></label>
+      <input type="datetime-local" th:field="*{date}" id="date" class="form-control" required/>
+      <div th:if="${#fields.hasErrors('date')}" class="text-danger" th:errors="*{date}"></div>
+    </div>
+
+
+    <!-- Campo para el descuento del ticket -->
+    <div class="mb-3">
+      <label for="discount" class="form-label" th:text="#{msg.ticket-form.discount}"></label>
+      <input type="number" th:field="*{discount}" id="discount" class="form-control" step="0.01" required/>
+      <div th:if="${#fields.hasErrors('discount')}" class="text-danger" th:errors="*{discount}"></div>
+    </div>
+
+
+    <!-- Campo para la ubicación del ticket -->
+    <div class="mb-3">
+      <label for="location" class="form-label" th:text="#{msg.ticket-form.location}"></label>
+      <select th:field="*{location.id}" id="location" class="form-control" required>
+        <option value="" th:text="#{msg.ticket-form.select-location}"></option>
+        <option th:each="location : ${listLocations}"
+                th:value="${location.id}"
+                th:text="${location.address} + ' - ' + ${location.province.name} + ' - ' + ${location.supermarket.name}"
+                th:selected="${ticket.location?.id == location.id}"></option>
+      </select>
+      <div th:if="${#fields.hasErrors('location.id')}" class="text-danger" th:errors="*{location.id}"></div>
+    </div>
+
+
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" class="btn btn-primary"
+            th:text="${ticket.id == null} ? #{msg.ticket-form.create} : #{msg.ticket-form.update}">
+    </button>
+  </form>
+
+
+  <!-- Volver a la lista de tickets -->
+  <a th:href="@{/tickets}" class="btn btn-secondary mt-3" th:text="#{msg.ticket-form.returnback}"></a>
+</main>
+
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+</html>
